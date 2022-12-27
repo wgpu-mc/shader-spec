@@ -19,7 +19,270 @@
     },
     "resources": {
       "description": "List of resources used by the shader.",
-      "type": "object"
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "int": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "int"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "float": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "float"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mat3": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "mat3"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mat4": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                }
+              },
+              "required": [
+                "mat4"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "blob"
+                },
+                "src": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "src"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "texture_3d"
+                },
+                "src": {
+                  "type": "string"
+                },
+                "clear_after_frame": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "src"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "texture_2d"
+                },
+                "src": {
+                  "type": "string"
+                },
+                "clear_after_frame": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "src"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "texture_depth"
+                },
+                "clear_after_frame": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "f32",
+                    "f64"
+                  ]
+                },
+                "range": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minLength": 2,
+                  "maxLength": 2
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "i32",
+                    "i64"
+                  ]
+                },
+                "range": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minLength": 2,
+                  "maxLength": 2
+                },
+                "value": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "mat3"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "mult": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "minProperties": 2,
+              "maxProperties": 2
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "mat4"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "mult": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "minProperties": 2,
+              "maxProperties": 2
+            }
+          ]
+        }
+      }
     },
     "pipelines": {
       "description": "List of pipelines used by the shader.",
@@ -29,5 +292,6 @@
   "required": [
     "version",
     "support"
-  ]
+  ],
+  "additionalProperties": false
 }
