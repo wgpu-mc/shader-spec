@@ -22,7 +22,6 @@
       "type": "object",
       "patternProperties": {
         "^.*$": {
-          "type": "object",
           "oneOf": [
             {
               "$ref": "#/$defs/short_int"
