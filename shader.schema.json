@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wgpu-mc/shader-spec/0.0.1-SNAPSHOT/schema",
+  "title": "wgpu-mc shader",
+  "description": "Shader used by wgpu-mc",
+  "type": "object",
+  "properties": {
+    "version": {
+      "description": "The specification's version.",
+      "type": "string"
+    },
+    "support": {
+      "description": "Specifies the shading language.",
+      "type": "string",
+      "enum": [
+        "glsl",
+        "wgsl"
+      ]
+    },
+    "resources": {
+      "description": "List of resources used by the shader.",
+      "type": "object"
+    },
+    "pipelines": {
+      "description": "List of pipelines used by the shader.",
+      "type": "object"
+    }
+  },
+  "required": [
+    "version",
+    "support"
+  ]
+}
