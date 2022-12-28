@@ -1,0 +1,356 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wgpu-mc/shader-spec/0.0.1-SNAPSHOT/schema",
+  "title": "wgpu-mc shader",
+  "description": "Shader used by wgpu-mc",
+  "type": "object",
+  "properties": {
+    "version": {
+      "description": "The specification's version.",
+      "type": "string"
+    },
+    "support": {
+      "description": "Specifies the shading language.",
+      "type": "string",
+      "enum": [
+        "glsl",
+        "wgsl"
+      ]
+    },
+    "resources": {
+      "description": "List of resources used by the shader.",
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/short_int"
+            },
+            {
+              "$ref": "#/$defs/short_float"
+            },
+            {
+              "$ref": "#/$defs/short_mat3"
+            },
+            {
+              "$ref": "#/$defs/short_mat4"
+            },
+            {
+              "$ref": "#/$defs/blob"
+            },
+            {
+              "$ref": "#/$defs/texture"
+            },
+            {
+              "$ref": "#/$defs/texture_depth"
+            },
+            {
+              "$ref": "#/$defs/float"
+            },
+            {
+              "$ref": "#/$defs/integer"
+            },
+            {
+              "$ref": "#/$defs/mat3_or_mult"
+            },
+            {
+              "$ref": "#/$defs/mat4_or_mult"
+            }
+          ]
+        }
+      }
+    },
+    "pipelines": {
+      "description": "List of pipelines used by the shader.",
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/pipeline"
+        }
+      }
+    }
+  },
+  "required": [
+    "version",
+    "support"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "short_int": {
+      "type": "object",
+      "properties": {
+        "int": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "int"
+      ],
+      "additionalProperties": false
+    },
+
+    "short_float": {
+      "type": "object",
+      "properties": {
+        "float": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "float"
+      ],
+      "additionalProperties": false
+    },
+
+    "short_mat3": {
+      "type": "object",
+      "properties": {
+        "mat3": {
+          "$ref": "#/$defs/mat3"
+        }
+      },
+      "required": [
+        "mat3"
+      ],
+      "additionalProperties": false
+    },
+
+    "short_mat4": {
+      "type": "object",
+      "properties": {
+        "mat4": {
+          "$ref": "#/$defs/mat4"
+        }
+      },
+      "required": [
+        "mat4"
+      ],
+      "additionalProperties": false
+    },
+
+    "mat3": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+
+    "mat4": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 4,
+        "maxItems": 4
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+
+    "blob": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "blob"
+        },
+        "src": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "src"
+      ],
+      "additionalProperties": false
+    },
+
+    "texture": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "texture_3d",
+            "texture_2d"
+          ]
+        },
+        "src": {
+          "type": "string"
+        },
+        "clear_after_frame": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "src"
+      ],
+      "additionalProperties": false
+    },
+
+    "texture_depth": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "texture_depth"
+        },
+        "clear_after_frame": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "float": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "f32",
+            "f64"
+          ]
+        },
+        "range": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+
+    "integer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "i32",
+            "i64"
+          ]
+        },
+        "range": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "value": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+
+    "mat3_or_mult": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "mat3"
+        },
+        "value": {
+          "$ref": "#/$defs/mat3"
+        },
+        "mult": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "minProperties": 2,
+      "maxProperties": 2
+    },
+
+    "mat4_or_mult": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "mat4"
+        },
+        "value": {
+          "$ref": "#/$defs/mat4"
+        },
+        "mult": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "minProperties": 2,
+      "maxProperties": 2
+    },
+
+    "pipeline": {
+      "type": "object",
+      "properties": {
+        "geometry": {
+          "type": "string"
+        },
+        "output": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8
+        },
+        "depth": {
+          "type": "string"
+        },
+        "blending": {
+          "type": "string"
+        },
+        "uniforms": {
+          "type": "object",
+          "patternProperties": {
+            "^\\d+$": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "geometry"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
