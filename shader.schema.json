@@ -62,7 +62,12 @@
     },
     "pipelines": {
       "description": "List of pipelines used by the shader.",
-      "type": "object"
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/pipeline"
+        }
+      }
     }
   },
   "required": [
@@ -311,6 +316,41 @@
       ],
       "minProperties": 2,
       "maxProperties": 2
+    },
+
+    "pipeline": {
+      "type": "object",
+      "properties": {
+        "geometry": {
+          "type": "string"
+        },
+        "output": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8
+        },
+        "depth": {
+          "type": "string"
+        },
+        "blending": {
+          "type": "string"
+        },
+        "uniforms": {
+          "type": "object",
+          "patternProperties": {
+            "^\\d+$": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "geometry"
+      ],
+      "additionalProperties": false
     }
   }
 }
